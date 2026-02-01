@@ -1,32 +1,61 @@
 import React, { useState } from "react"
-
+type tarefa = { 
+  id: number; 
+  nome: string; 
+  feito: boolean;
+}
 function App() {
-  const [listaDeTarefa, setListaDeTarefa] = useState<string[]>([]);
+  const [listaDeTarefa, setListaDeTarefa] = useState<tarefa[]>([]);
   const [valor, setValor] = useState<string>("")
 
-  function Colheta(dado: string) {
-    setListaDeTarefa([...listaDeTarefa, dado])
-  }
-  const KeyDownEnter= (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      Colheta(valor);
-      setValor("") 
+  function criarTarefa(nome: string):tarefa {
+    return { 
+      id: Date.now(),
+      nome,
+      feito: false 
     }
-   }
+  }
 
-  return ( 
-    <div> 
-      <input 
-      type="text" 
-      value={valor}
-       onChange={(e) => setValor(e.target.value)}
-       onKeyDown={KeyDownEnter}
-       />
-        <ul>
-          {listaDeTarefa.map((item, index) => (
-            <li key={index}> {item} </li>
-          ))}
-        </ul>
+
+  function toggleConclussão(id: number) {
+    setListaDeTarefa( prev=> 
+      prev.map(tarefa => 
+        tarefa.id === id 
+        ? {...tarefa, feito: !tarefa.feito}
+        : tarefa
+      )
+    )
+  }
+  function addTarefa(nome: string) {
+    setListaDeTarefa(prev=> [...prev, criarTarefa(nome)])
+  }
+  const KeyDownEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      addTarefa(valor);
+      setValor("")
+    }
+  }
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={valor}
+        onChange={(e) => setValor(e.target.value)}
+        onKeyDown={KeyDownEnter}
+      />
+      <ul>
+        {listaDeTarefa.map((tarefa) => (
+          <li key={tarefa.id}> 
+          <input 
+          type="checkbox"
+          checked={tarefa.feito} 
+          onChange={() => toggleConclussão(tarefa.id)}
+          />
+          {tarefa.nome}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
