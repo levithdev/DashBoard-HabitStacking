@@ -49,10 +49,12 @@ function App() {
   function addTarefa(nome: string) {
     setListaDeTarefa(prev => [...prev, criarTarefa(nome)])
   }
-  const KeyDownEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleEnter = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    acao: () => void
+  ) => {
     if (event.key === "Enter") {
-      addTarefa(valor);
-      setValor("")
+      acao()
     }
   }
 
@@ -62,7 +64,12 @@ function App() {
         type="text"
         value={valor}
         onChange={(e) => setValor(e.target.value)}
-        onKeyDown={KeyDownEnter}
+        onKeyDown={(e) =>
+          handleEnter(e, () => {
+            addTarefa(valor)
+            setValor("")
+          })
+        }
       />
       <ul>
         {listaDeTarefa.map((tarefa) => (
@@ -77,13 +84,12 @@ function App() {
               type="text"
               value={novoNome}
               onChange={(e) => SetNovoNome(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") { 
-                  mudaNome(tarefa.id, novoNome) 
-                  modoEdicao(tarefa.id) 
+              onKeyDown={(e) => 
+                handleEnter(e, () => {
+                  mudaNome(tarefa.id, novoNome)
+                  modoEdicao(tarefa.id)
                   SetNovoNome("")
-                }
-              }}
+                })}
                />
             ) : (
               <button onClick={() => modoEdicao(tarefa.id)}>
