@@ -3,6 +3,7 @@ type tarefa = {
   id: number; 
   nome: string; 
   feito: boolean;
+  editado: boolean;
 }
 function App() {
   const [listaDeTarefa, setListaDeTarefa] = useState<tarefa[]>([]);
@@ -12,12 +13,13 @@ function App() {
     return { 
       id: Date.now(),
       nome,
-      feito: false 
+      feito: false,
+      editado: false
     }
   }
 
 
-  function toggleConclussão(id: number) {
+  function toggleConclussao(id: number) {
     setListaDeTarefa( prev=> 
       prev.map(tarefa => 
         tarefa.id === id 
@@ -50,7 +52,7 @@ function App() {
           <input 
           type="checkbox"
           checked={tarefa.feito} 
-          onChange={() => toggleConclussão(tarefa.id)}
+          onChange={() => toggleConclussao(tarefa.id)}
           />
           {tarefa.nome}
           </li>
