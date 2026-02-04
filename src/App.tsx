@@ -8,6 +8,7 @@ type tarefa = {
 function App() {
   const [listaDeTarefa, setListaDeTarefa] = useState<tarefa[]>([]);
   const [valor, setValor] = useState<string>("")
+  const [novoNome, SetNovoNome] = useState<string>("")
 
   function criarTarefa(nome: string): tarefa {
     return {
@@ -64,7 +65,11 @@ function App() {
               onChange={() => toggleConclussao(tarefa.id)}
             />
             {tarefa.editado ? (
-              <p>teste</p>
+              <input 
+              type="text"
+              value={novoNome}
+              onChange={(e) => SetNovoNome(e.target.value)}
+               />
             ) : (
               <button onClick={() => modoEdicao(tarefa.id)}>
                 {tarefa.nome}
