@@ -27,7 +27,15 @@ function App() {
       )
     )
   }
-
+   function mudaNome(id: number, novoNome:string) {
+    setListaDeTarefa(prev => 
+      prev.map(tarefa => 
+        tarefa.id === id 
+        ? {...tarefa, nome: novoNome}
+        : tarefa 
+      )
+    )
+   }
 
   function toggleConclussao(id: number) {
     setListaDeTarefa(prev =>
@@ -69,6 +77,13 @@ function App() {
               type="text"
               value={novoNome}
               onChange={(e) => SetNovoNome(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") { 
+                  mudaNome(tarefa.id, novoNome) 
+                  modoEdicao(tarefa.id) 
+                  SetNovoNome("")
+                }
+              }}
                />
             ) : (
               <button onClick={() => modoEdicao(tarefa.id)}>
