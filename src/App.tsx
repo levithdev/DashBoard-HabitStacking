@@ -17,6 +17,15 @@ function App() {
       editado: false
     }
   }
+  function modEdicao(id: number) { 
+    setListaDeTarefa( prev => 
+      prev.map(tarefa => 
+        tarefa.id === id 
+        ? {...tarefa, editado: !tarefa.editado}
+        : tarefa
+      ) 
+    )
+  }
 
 
   function toggleConclussao(id: number) {
