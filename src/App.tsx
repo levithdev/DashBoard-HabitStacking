@@ -1,7 +1,7 @@
-import React, { useState } from "react"
-type tarefa = { 
-  id: number; 
-  nome: string; 
+import React, { useState } from "react";
+type tarefa = {
+  id: number;
+  nome: string;
   feito: boolean;
   editado: boolean;
 }
@@ -9,36 +9,36 @@ function App() {
   const [listaDeTarefa, setListaDeTarefa] = useState<tarefa[]>([]);
   const [valor, setValor] = useState<string>("")
 
-  function criarTarefa(nome: string):tarefa {
-    return { 
+  function criarTarefa(nome: string): tarefa {
+    return {
       id: Date.now(),
       nome,
       feito: false,
       editado: false
     }
   }
-  function modEdicao(id: number) { 
-    setListaDeTarefa( prev => 
-      prev.map(tarefa => 
-        tarefa.id === id 
-        ? {...tarefa, editado: !tarefa.editado}
-        : tarefa
-      ) 
+  function modoEdicao(id: number) {
+    setListaDeTarefa(prev =>
+      prev.map(tarefa =>
+        tarefa.id === id
+          ? { ...tarefa, editado: !tarefa.editado }
+          : tarefa
+      )
     )
   }
 
 
   function toggleConclussao(id: number) {
-    setListaDeTarefa( prev=> 
-      prev.map(tarefa => 
-        tarefa.id === id 
-        ? {...tarefa, feito: !tarefa.feito}
-        : tarefa
+    setListaDeTarefa(prev =>
+      prev.map(tarefa =>
+        tarefa.id === id
+          ? { ...tarefa, feito: !tarefa.feito }
+          : tarefa
       )
     )
   }
   function addTarefa(nome: string) {
-    setListaDeTarefa(prev=> [...prev, criarTarefa(nome)])
+    setListaDeTarefa(prev => [...prev, criarTarefa(nome)])
   }
   const KeyDownEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -57,13 +57,20 @@ function App() {
       />
       <ul>
         {listaDeTarefa.map((tarefa) => (
-          <li key={tarefa.id}> 
-          <input 
-          type="checkbox"
-          checked={tarefa.feito} 
-          onChange={() => toggleConclussao(tarefa.id)}
-          />
-          {tarefa.nome}
+          <li key={tarefa.id}>
+            <input
+              type="checkbox"
+              checked={tarefa.feito}
+              onChange={() => toggleConclussao(tarefa.id)}
+            />
+            {tarefa.editado ? (
+              <p>teste</p>
+            ) : (
+              <button onClick={() => modoEdicao(tarefa.id)}>
+                {tarefa.nome}
+              </button>
+            )
+            }
           </li>
         ))}
       </ul>
