@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 type tarefa = {
   id: number;
   nome: string;
@@ -17,6 +18,19 @@ function App() {
       feito: false,
       editado: false
     }
+  }
+  function deletarFunção(id: number) {
+    setListaDeTarefa(prev => {
+      const update = [...prev];
+      const index = update.findIndex(tarefa => tarefa.id === id);
+      
+      if (index !== -1) {
+        update.splice(index, 1);
+      }
+      
+      return update;
+      }
+    )
   }
   function modoEdicao(id: number) {
     setListaDeTarefa(prev =>
@@ -97,6 +111,7 @@ function App() {
               </button>
             )
             }
+            <button onClick={() => deletarFunção(tarefa.id)}> Deletar</button>
           </li>
         ))}
       </ul>
